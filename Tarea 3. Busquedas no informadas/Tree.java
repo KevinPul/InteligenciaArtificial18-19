@@ -7,16 +7,19 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 public class Tree {
     Node root;
     String initialState;
     String goalState;
+    private List<String[]> metrics;
 
     public Tree(String initialState, String goalState) {
         this.root = new Node(initialState, null);
         this.initialState = initialState;
         this.goalState = goalState;
+        this.metrics = new ArrayList<>();
     }
     // 1. Primero en anchura
     public void breadthFirstSearch() {
@@ -35,6 +38,7 @@ public class Tree {
                 System.out.println("Goal state found: " + currentNode.getState());
                 System.out.println("Tiempo requerido: " + (endTime - startTime) + " ms");
                 System.out.println("Nodos visitados (Espacio): " + visited.size());
+                metrics.add(new String[]{"Anchura (BFS)", (endTime - startTime) + " ms", String.valueOf(visited.size())});
                 printPath(currentNode);
                 return;
             }
@@ -70,6 +74,7 @@ public class Tree {
                 System.out.println("Meta encontrada: " + goalState);
                 System.out.println("Tiempo requerido: " + (endTime - startTime) + "ms");
                 System.out.println("Nodos visitados: " + visited.size());
+                metrics.add(new String[]{"Costo Uniforme", (endTime - startTime) + " ms", String.valueOf(visited.size())});
                 printPath(currentNode);
                 return;
             }
@@ -107,6 +112,7 @@ public class Tree {
                 System.out.println("Meta encontrada: " + currentNode.getState());
                 System.out.println("Tiempo requerido: " + (endTime - startTime) + " ms");
                 System.out.println("Nodos visitados (Espacio): " + visited.size());
+                metrics.add(new String[]{"Profundidad (DFS)", (endTime - startTime) + " ms", String.valueOf(visited.size())});
                 printPath(currentNode);
                 return;
             }
@@ -140,6 +146,7 @@ public class Tree {
                     System.out.println("Meta encontrada: " + currentNode.getState());
                     System.out.println("Tiempo requerido: " + (endTime - startTime) + " ms");
                     System.out.println("Nodos visitados (Espacio): " + visited.size());
+                    metrics.add(new String[]{"Prof. Limitada ("+limit+")", (endTime - startTime) + " ms", String.valueOf(visited.size())});
                     printPath(currentNode);
                 }
                 return currentNode;
@@ -176,6 +183,7 @@ public class Tree {
                 long endTime = System.currentTimeMillis();
                 System.out.println("¡Solución encontrada por IDS en el límite de profundidad: " + limit + "!");
                 System.out.println("Tiempo total de todas las iteraciones: " + (endTime - startTime) + " ms");
+                metrics.add(new String[]{"Prof. Iterativa (IDS)", (endTime - startTime) + " ms", "Profundidad: " + limit});
                 printPath(result);
                 return;
             }
@@ -242,6 +250,7 @@ public class Tree {
         System.out.println("Intersección encontrada en:\n" + NodeUtils.formatState(fIntersect.getState()));
         System.out.println("Tiempo requerido: " + (endTime - startTime) + " ms");
         System.out.println("Nodos visitados totales (Espacio): " + (fVis.size() + bVis.size()));
+        metrics.add(new String[]{"Bidireccional", (endTime - startTime) + " ms", String.valueOf(fVis.size() + bVis.size())});
 
         LinkedList<String> path = new LinkedList<>();
         
@@ -283,4 +292,15 @@ public class Tree {
         }
         System.out.println();
     }
+    public void printComparativeTable() {
+    System.out.println("\n===============================================================");
+    System.out.println("          TABLA COMPARATIVA DE COMPLEJIDAD ALGORÍTMICA         ");
+    System.out.println("===============================================================");
+    System.out.printf("%-25s | %-15s | %-15s%n", "Algoritmo", "Tiempo (Físico)", "Espacio (Nodos)");
+    System.out.println("---------------------------------------------------------------");
+    for (String[] row : metrics) {
+        System.out.printf("%-25s | %-15s | %-15s%n", row[0], row[1], row[2]);
+    }
+    System.out.println("===============================================================\n");
+}
 }

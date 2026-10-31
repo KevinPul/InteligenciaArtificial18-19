@@ -3,7 +3,6 @@ import java.util.List;
 
 public class NodeUtils {
 
-    // Constructor privado para evitar instanciar la clase de utilería
     private NodeUtils() {
         throw new IllegalStateException("Utility class");
     }

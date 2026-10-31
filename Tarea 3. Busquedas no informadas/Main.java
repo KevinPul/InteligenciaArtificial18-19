@@ -17,5 +17,6 @@ public class Main {
         tree.iterativeDeepeningSearch(15);
         System.out.println("=================================");
         tree.bidirectionalSearch();
+        tree.printComparativeTable();
     }
 }
